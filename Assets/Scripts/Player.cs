@@ -33,41 +33,32 @@ public class Player : MonoBehaviour
         horRot.transform.Rotate(new Vector3(0, X_Rotation * CameraRotRatio, 0));
         verRot.transform.Rotate(-Y_Rotation * CameraRotRatio, 0, 0);
 
+        bool moving = false;
         anim.SetBool("is_running", false);
 
         if (Input.GetKey(KeyCode.W))
         {
             characterController.Move(this.gameObject.transform.forward * MoveSpeed * Time.deltaTime);
-            anim.SetBool("is_running", true);
+            moving = true;
         }
-
-        if (Input.GetKey(KeyCode.S))//①Sキーがおされたら
+        if (Input.GetKey(KeyCode.S))
         {
             characterController.Move(this.gameObject.transform.forward * -1f * MoveSpeed * Time.deltaTime);
-            anim.SetBool("is_running", true);
+            moving = true;
         }
-
-        if (Input.GetKey(KeyCode.A))//①Aキーがおされたら 
+        if (Input.GetKey(KeyCode.A))
         {
             characterController.Move(this.gameObject.transform.right * -1 * MoveSpeed * Time.deltaTime);
-            anim.SetBool("is_running", true);
+            moving = true;
         }
-
-        if (Input.GetKey(KeyCode.D))//①Dキーがおされたら 
+        if (Input.GetKey(KeyCode.D))
         {
             characterController.Move(this.gameObject.transform.right * MoveSpeed * Time.deltaTime);
-            anim.SetBool("is_running", true);
+            moving = true;
         }
 
+        anim.SetBool("is_running", moving);
         characterController.Move(Velocity);//①キャラクターコントローラーをVelocityだけ動かし続ける
         Velocity.y += Physics.gravity.y * Time.deltaTime;//①Velocityのy軸を重力*Time.deltaTime分だけ動かす
-
-        if (characterController.isGrounded)//①キャラクターコントローラーが地面に接触している時に
-        {
-            if (Input.GetKeyDown(KeyCode.Space))//①スペースキーがおされたら
-            {
-                Velocity.y = JumpPower;//①Velocity.yをJumpPowerにする
-            }
-        }
     }
 }
