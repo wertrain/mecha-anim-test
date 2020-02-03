@@ -12,7 +12,7 @@ public class Player : MonoBehaviour
     public Transform horRot;
 
     public float MoveSpeed;
-    private Animator anim;
+    private Animator animator;
 
     [Range(1, 100)]
     public float CameraRotRatio = 4f;
@@ -21,7 +21,7 @@ public class Player : MonoBehaviour
     void Start()
     {
         characterController = GetComponent<CharacterController>();
-        anim = GetComponent<Animator>();
+        animator = GetComponent<Animator>();
     }
 
     // Update is called once per frame
@@ -34,7 +34,6 @@ public class Player : MonoBehaviour
         verRot.transform.Rotate(-Y_Rotation * CameraRotRatio, 0, 0);
 
         bool moving = false;
-        anim.SetBool("is_running", false);
 
         if (Input.GetKey(KeyCode.W))
         {
@@ -57,7 +56,23 @@ public class Player : MonoBehaviour
             moving = true;
         }
 
-        anim.SetBool("is_running", moving);
+        if (animator.GetCurrentAnimatorStateInfo(0).IsName("Jump"))
+        {
+            animator.SetBool("Jump", false);
+        }
+        else
+        {
+            if (Input.GetKey(KeyCode.Space) && !animator.IsInTransition(0))
+            {
+                animator.SetBool("Jump", true);
+                Velocity.y += 1.0f;
+            }
+        }
+
+        animator.SetBool("Running", moving);
+
+
+
         characterController.Move(Velocity);//①キャラクターコントローラーをVelocityだけ動かし続ける
         Velocity.y += Physics.gravity.y * Time.deltaTime;//①Velocityのy軸を重力*Time.deltaTime分だけ動かす
     }
