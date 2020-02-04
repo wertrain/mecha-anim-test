@@ -56,6 +56,10 @@ public class Player : MonoBehaviour
             moving = true;
         }
 
+        bool shoot = Input.GetMouseButtonDown(0);
+
+        animator.SetBool(moving ? "WalkFrontShoot" : "BurstShot", Input.GetMouseButtonDown(0));
+
         if (animator.GetCurrentAnimatorStateInfo(0).IsName("Jump"))
         {
             animator.SetBool("Jump", false);
