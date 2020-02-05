@@ -34,6 +34,7 @@ public class Player : MonoBehaviour
         verRot.transform.Rotate(-Y_Rotation * CameraRotRatio, 0, 0);
 
         bool moving = false;
+                bool shoot = Input.GetMouseButtonDown(0);
 
         if (Input.GetKey(KeyCode.W))
         {
@@ -56,8 +57,6 @@ public class Player : MonoBehaviour
             moving = true;
         }
 
-        bool shoot = Input.GetMouseButtonDown(0);
-
         animator.SetBool(moving ? "WalkFrontShoot" : "BurstShot", Input.GetMouseButtonDown(0));
 
         if (animator.GetCurrentAnimatorStateInfo(0).IsName("Jump"))
@@ -74,8 +73,6 @@ public class Player : MonoBehaviour
         }
 
         animator.SetBool("Running", moving);
-
-
 
         characterController.Move(Velocity);//①キャラクターコントローラーをVelocityだけ動かし続ける
         Velocity.y += Physics.gravity.y * Time.deltaTime;//①Velocityのy軸を重力*Time.deltaTime分だけ動かす
